@@ -11,6 +11,9 @@ const blogs = [
     description:
       "We all have to do a better job of following through, and a better job of finishing what we start. IF we all do that, the world would be a better place, filled with more Christ like people, and more Christians. So today, I challenge myself and I challenge you to find and fulfill your purpose with purpose, and finish the race strong, so that way we can be ready for more responsibilities that God will hand us!",
     date: "25th November,2030",
+    comment:[],
+    replies:[],
+    banner:"Come to our Blog."
   },
 
   {
@@ -18,7 +21,10 @@ const blogs = [
     abouttheAuthor: "Senior Economist and lecturer at the University of Ghana, Legon Main Campus.",
     title: "Rampaging the goals of success",
     description: "The journey to being successful is not an easy one, but with the claws of consistency in between our fingers, we are fierce.",
-    date:"10th January, 2045"
+    date:"10th January, 2045",
+    comment:[],
+    replies:[],
+    banner:"Come to our Blog."
       
   },
 
@@ -27,7 +33,10 @@ const blogs = [
     abouttheAuthor: "Acturist and Audit practitioner",
     title: "",
     description:"The journey to being successful is not an easy one, but with the claws of consistency in between our fingers, we are fierce.",
-    date:"15th March, 2045"
+    date:"15th March, 2045",
+    comment:[],
+    replies:[],
+    banner:"Come to our Blog."
   },
 
   {
@@ -35,7 +44,10 @@ const blogs = [
     abouttheAuthor: "Biologist and NeuroSurgeon",
     title: "Animals and Extraction",
     description:"The journey to being successful is not an easy one, but with the claws of consistency in between our fingers, we are fierce.",
-    date:"10th January, 2045"
+    date:"10th January, 2045",
+    comment:[],
+    replies:[],
+    banner:"Come to our Blog."
   },
 
   {
@@ -43,26 +55,23 @@ const blogs = [
     abouttheAuthor: "A God fearing  millionaire.",
     title: "Patience Is Key.",
     description:"The journey to being successful is not an easy one, but with the claws of consistency in between our paws makes us fierce.",
-    date:"12th October, 2021"
+    date:"12th October, 2021",
+    comment:[],
+    replies:[],
+    banner:"Come to our Blog."
   },
 
   {
     author: "Andy Enyimah Ackah",
     abouttheAuthor: "A fervernt man of God in Prayer.",
-    title: "Best Experiences with Afluent Friends",
+    title: "Prove me Wrong",
     description:
-      "Divide and conquer... We hear it all the time, usually in reference on how to work more efficiently to complete a task. There is power in doing so. So, why do we allow Satan to do this very thing to us? We let him divide the kingdom, propping believer against believer, sect against sect, and denomination against denomination. We now HATE others based on what political stance they have, traditions they practice, and what race they we born into. Ironically, each side of the spectrum claims that the other side is the author of these evils, that vandalism only comes from liberals Uneducated and stupid.",
+      "This book shall never depart from your mouth.",
     date: "12th October,2021",
+    comment:[],
+    replies:[],
+    banner:"Come to our Blog."
   },
-
-  {
-    author: "Cathy Quaye",
-    abouttheAuthor: "A passionate reader and writer of developmental issues.",
-    title: "Social Ammenities and their growth.",
-    description:"The journey to being successful is not an easy one, but with the claws of consistency in between our fingers, we are fierce.",
-    date:"10th January, 2045",
-  },
-
 
   
 ];
@@ -75,6 +84,9 @@ const schemas = gql`
     title: String!
     description: String!
     date: String!
+    comment:[String]
+    replies:[String]
+    banner:String
   }
   type Query {
     blogs: [Blog]
@@ -87,7 +99,21 @@ const schemas = gql`
       abouttheAuthor: String!
       description: String!
       date: String!
+      comment:[String]
+      replies:[String]
+      banner:String
     ): Blog
+
+
+    updateBlog(title:String!),
+    deleteBlog(title:String!),
+    likeBlog(title:String!),
+    unlikeBlog(title:String!)
+    comment(title:String!)
+    deleteComment(title:String!)
+    replyComment(title:String!)
+
+    
   }
 `;
 
@@ -100,12 +126,24 @@ const blogResolvers = {
 
   Mutation: {
     createBlog: (parent, args) => {
-      const { title, author, abouttheAuthor, description, date } = args;
-      const blog = { title, author, abouttheAuthor, description, date };
+      const { title, author, abouttheAuthor, description, date, comment, replies, banner } = args;
+      const blog = { title, author, abouttheAuthor, description, date, comment,replies,banner};
       blogs.push(blog);
       return blog;
     },
     
+    updateBlog: (parent, args) => {
+        const { title, content} = args;
+        const location = blog.findIndex((blog) => blog.title === args.title);
+        blogs[location].content=content;
+        return args;
+      },
+      deleteBlog: (parent, args) => {
+        const location = blog.findIndex((blog) => blog.title === args.title);
+        blogs[location].content=content;
+        return args;
+      },
+      
     
   },
 };
